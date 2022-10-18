@@ -1,11 +1,8 @@
 import React from 'react';
+import LoginComponent from '../../components/Login';
 
 const Login = () => {
-  return (
-    <View>
-      <Text>Hi From Login</Text>
-    </View>
-  );
+  return <LoginComponent />;
 };
 
 export default Login;
