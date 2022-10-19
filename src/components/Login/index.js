@@ -5,9 +5,10 @@ import Container from '../../components/common/Container';
 import CustomButton from '../../components/common/CustomButton';
 import Input from '../../components/common/Input';
 import {REGISTER} from '../../constants/routeNames';
+import Message from '../common/Message';
 import styles from './styles';
-const LoginComponent = (props) => {
-  console.log('🚀 ~ file: index.js ~ line 11 ~ LoginComponent ~ props', props);
+const LoginComponent = ({onChange, onSubmit, form, loading, error}) => {
+  // console.log('🚀 ~ file: index.js ~ line 11 ~ LoginComponent ~ props', props);
   const {navigate} = useNavigation();
   return (
     <Container>
@@ -20,13 +21,34 @@ const LoginComponent = (props) => {
       <View>
         <Text style={styles.title}>Welcome To RNContacts</Text>
         <Text style={styles.subTitle}>Please Login Here</Text>
+        {/* <Message
+          retry
+          retryFn={() => {
+            console.log(`23233 ${232323}`);
+          }}
+          message={`Invalid Credentials`}
+          primary
+          onDismiss={() => {}}
+        /> */}
+        {error && !error.error && (
+          <Message
+            onDismiss={() => {}}
+            message={`Invalid Credentials`}
+            danger
+          />
+        )}
 
         <View style={styles.form}>
+          {error?.error && (
+            <Message retry danger onDismiss message={error?.error} />
+          )}
           <Input
             label="Username"
             iconPosition="right"
             placeholder="Enter Username"
-            // error = "This Field is required"
+            onChangeText={value => {
+              onChange({name: 'userName', value});
+            }}
           />
           <Input
             label="Password"
@@ -34,9 +56,18 @@ const LoginComponent = (props) => {
             secureTextEntry={true}
             icon={<Text>Show</Text>}
             iconPosition="right"
+            onChangeText={value => {
+              onChange({name: 'password', value});
+            }}
           />
 
-          <CustomButton primary title="Submit" />
+          <CustomButton
+            disabled={loading}
+            loading = {loading}
+            onPress={onSubmit}
+            primary
+            title="Submit"
+          />
 
           <View style={styles.createSection}>
             <Text style={styles.infoText}>Need a new account ? </Text>

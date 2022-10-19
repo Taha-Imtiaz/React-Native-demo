@@ -1,5 +1,6 @@
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import React from 'react';
+import {Text} from 'react-native';
 import {
   CONTACT_DETAIL,
   CONTACT_LIST,
@@ -18,7 +19,10 @@ const HomeNavigator = () => {
     <HomeStack.Navigator initialRouteName={CONTACT_LIST}>
       <HomeStack.Screen
         name={CONTACT_LIST}
-        component={Contacts}></HomeStack.Screen>
+        component={Contacts}
+        // 1 method of setting options
+        // options = {{headerLeft:() => <Text style= {{padding:10}}>Nav</Text>}}
+      ></HomeStack.Screen>
       <HomeStack.Screen
         name={CONTACT_DETAIL}
         component={ContactDetail}></HomeStack.Screen>

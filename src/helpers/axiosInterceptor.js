@@ -1,11 +1,12 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import {AsyncStorage} from '@react-native-async-storage/async-storage';
 import env from '../config/env';
 
 let headers = {};
+console.log(env.DEV_BACKEND_URL);
 // create axios instace
 const axiosInstace = axios.create({
-  baseURL: env.DEV_BACKEND_URL,
+  baseURL: 'https://truly-contacts.herokuapp.com/api/',
   headers,
 });
 // create interceptor to add anything /modify a request

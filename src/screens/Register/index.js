@@ -1,23 +1,41 @@
-import React, {useEffect, useState} from 'react';
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
+import React, {useCallback, useContext, useEffect, useState} from 'react';
 import RegisterComponent from '../../components/Signup';
 import envs from '../../config/env';
-import axiosInstace from '../../helpers/axiosInterceptor';
+import {LOGIN} from '../../constants/routeNames';
+import register, {clearAuthState} from '../../context/actions/auth/register';
+import {GlobalContext} from '../../context/Provider';
+import axios from '../../helpers/axiosInterceptor';
+
 const Register = () => {
   const [form, setForm] = useState({});
   const [errors, setErrors] = useState({});
-  const {DEV_BACKEND_URL} = envs;
-
-  // console.log(`DEV_BACKEND_URL ${DEV_BACKEND_URL}`);
-  // console.log(`__DEV__ ${__DEV__}`);
+  const {navigate} = useNavigation();
+  const {
+    authDispatch,
+    authState: {error, loading, data},
+  } = useContext(GlobalContext);
   useEffect(() => {
-    axiosInstace.post(`/auth/login`,)
-  }, []);
+    if (data) {
+      navigate(LOGIN);
+    }
+  }, [data]);
 
+  useFocusEffect(
+    React.useCallback(() => {
+      return () => {
+        if (data || error) {
+          clearAuthState()(authDispatch);
+        }
+      };
+    }, [data, error]),
+  );
   const onChange = ({name, value}) => {
     setForm({
       ...form,
       [name]: value,
     });
+
     if (value) {
       if (name === 'password') {
         if (value.length < 6) {
@@ -46,7 +64,7 @@ const Register = () => {
   };
   const onSubmit = () => {
     // do validations
-    console.log('🚀 ~ file: index.js ~ line 13 ~ onChange ~ form', form);
+    // console.log('🚀 ~ file: index.js ~ line 13 ~ onChange ~ form', form);
     if (!form.userName) {
       setErrors(prevState => ({
         ...prevState,
@@ -77,13 +95,23 @@ const Register = () => {
         password: 'Please Add an password',
       }));
     }
+    if (
+      Object.values(form).length === 5 &&
+      Object.values(form).every(item => item.trim().length > 0) &&
+      Object.values(errors).every(item => !item)
+    ) {
+      register(form)(authDispatch);
+    }
   };
+
   return (
     <RegisterComponent
       onChange={onChange}
       onSubmit={onSubmit}
       form={form}
       errors={errors}
+      error={error}
+      loading={loading}
     />
   );
 };
