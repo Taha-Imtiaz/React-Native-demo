@@ -1,5 +1,5 @@
 import {useNavigation} from '@react-navigation/native';
-import React from 'react';
+import React, {useState} from 'react';
 import {Image, Text, TextInput, TouchableOpacity, View} from 'react-native';
 import Container from '../../components/common/Container';
 import CustomButton from '../../components/common/CustomButton';
@@ -7,9 +7,10 @@ import Input from '../../components/common/Input';
 import {REGISTER} from '../../constants/routeNames';
 import Message from '../common/Message';
 import styles from './styles';
-const LoginComponent = ({onChange, onSubmit, form, loading, error}) => {
+const LoginComponent = ({onChange, onSubmit, justSignedUp, form, loading, error}) => {
   // console.log('🚀 ~ file: index.js ~ line 11 ~ LoginComponent ~ props', props);
   const {navigate} = useNavigation();
+  const [isSecureEntry, setIsSecureEntry] = useState(true);
   return (
     <Container>
       <Image
@@ -30,6 +31,14 @@ const LoginComponent = ({onChange, onSubmit, form, loading, error}) => {
           primary
           onDismiss={() => {}}
         /> */}
+
+
+        <View style={styles.form}>
+          {justSignedUp &&  <Message
+            onDismiss={() => {}}
+            message={`Account Created Successfully`}
+            success
+          />}
         {error && !error.error && (
           <Message
             onDismiss={() => {}}
@@ -37,8 +46,6 @@ const LoginComponent = ({onChange, onSubmit, form, loading, error}) => {
             danger
           />
         )}
-
-        <View style={styles.form}>
           {error?.error && (
             <Message retry danger onDismiss message={error?.error} />
           )}
@@ -46,6 +53,7 @@ const LoginComponent = ({onChange, onSubmit, form, loading, error}) => {
             label="Username"
             iconPosition="right"
             placeholder="Enter Username"
+            value={form.userName || ''}
             onChangeText={value => {
               onChange({name: 'userName', value});
             }}
@@ -53,8 +61,13 @@ const LoginComponent = ({onChange, onSubmit, form, loading, error}) => {
           <Input
             label="Password"
             placeholder="Enter Password"
-            secureTextEntry={true}
-            icon={<Text>Show</Text>}
+            secureTextEntry={isSecureEntry}
+            icon={
+              <TouchableOpacity
+                onPress={() => setIsSecureEntry(prevState => !prevState)}>
+                <Text>{isSecureEntry ? `Show` : 'Hide'}</Text>
+              </TouchableOpacity>
+            }
             iconPosition="right"
             onChangeText={value => {
               onChange({name: 'password', value});
@@ -63,7 +76,7 @@ const LoginComponent = ({onChange, onSubmit, form, loading, error}) => {
 
           <CustomButton
             disabled={loading}
-            loading = {loading}
+            loading={loading}
             onPress={onSubmit}
             primary
             title="Submit"

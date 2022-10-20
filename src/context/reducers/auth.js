@@ -3,6 +3,7 @@ import {
   LOGIN_FAIL,
   LOGIN_START,
   LOGIN_SUCCESS,
+  LOGOUT_USER,
   REGISTER_FAIL,
   REGISTER_LOADING,
   REGISTER_SUCCESS,
@@ -13,29 +14,37 @@ const auth = (state, {type, payload}) => {
     case LOGIN_START:
 
     case REGISTER_LOADING:
-      console.log('🚀 ~ file: auth.js ~ line 8 ~ auth ~ state', state);
+      // console.log('🚀 ~ file: auth.js ~ line 8 ~ auth ~ state', state);
       return {
         ...state,
         loading: true,
       };
     case REGISTER_SUCCESS:
-      console.log(`State success ${state}`);
+      // console.log(`State success ${state}`);
       return {
         ...state,
         loading: false,
         data: payload,
       };
     case LOGIN_SUCCESS:
-      console.log(`State success ${state}`);
+      // console.log(`State success ${state}`);
       return {
         ...state,
         loading: false,
         data: payload,
         isLoggedIn: true,
       };
+
+      case LOGOUT_USER:
+        return {
+          ...state,
+          loading: false,
+          data: null,
+          isLoggedIn: false,
+        };
     case REGISTER_FAIL:
     case LOGIN_FAIL:
-      console.log(`State fail ${state}`);
+      // console.log(`State fail ${state}`);
 
       return {
         ...state,

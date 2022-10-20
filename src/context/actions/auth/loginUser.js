@@ -16,7 +16,7 @@ export default ({password, userName: username}) =>
         password,
         username,
       });
-      console.log('🚀 ~ file: login.js ~ line 34 ~ response', response.data);
+      // console.log('🚀 ~ file: login.js ~ line 34 ~ response', response.data);
       // set token in async storage
       AsyncStorage.setItem('token', response.data.token);
       AsyncStorage.setItem('user', JSON.stringify(response.data.user));
@@ -26,7 +26,7 @@ export default ({password, userName: username}) =>
         payload: response.data,
       });
     } catch (error) {
-      console.log('🚀 ~ file: login.js ~ line 47 ~ error', error.response.data);
+      // console.log('🚀 ~ file: login.js ~ line 47 ~ error', error.response.data);
       dispatch({
         type: LOGIN_FAIL,
         payload: error.response

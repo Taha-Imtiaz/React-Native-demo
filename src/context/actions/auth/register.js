@@ -19,14 +19,8 @@ export default ({
     firstName: first_name,
     lastName: last_name,
   }) =>
-  //   console.log(`cdsdsdf `, {
-  //     email,
-  //     password,
-  //      username,
-  //      first_name,
-  //     last_name,
-  //   });
-  async dispatch => {
+  
+   (dispatch) =>async (onSuccess) => {
     dispatch({
       type: REGISTER_LOADING,
     });
@@ -43,11 +37,12 @@ export default ({
         type: REGISTER_SUCCESS,
         payload: response.data,
       });
+      onSuccess(response.data)
     } catch (error) {
-      console.log(
-        '🚀 ~ file: register.js ~ line 47 ~ error',
-        error.response.data,
-      );
+      // console.log(
+      //   '🚀 ~ file: register.js ~ line 47 ~ error',
+      //   error.response.data,
+      // );
       dispatch({
         type: REGISTER_FAIL,
         payload: error.response

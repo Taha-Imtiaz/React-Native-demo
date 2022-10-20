@@ -15,12 +15,9 @@ const Register = () => {
     authDispatch,
     authState: {error, loading, data},
   } = useContext(GlobalContext);
-  useEffect(() => {
-    if (data) {
-      navigate(LOGIN);
-    }
-  }, [data]);
+  console.log('🚀 ~ file: index.js ~ line 18 ~ Register ~ data', data);
 
+  // cancel out evens that are attached
   useFocusEffect(
     React.useCallback(() => {
       return () => {
@@ -100,7 +97,9 @@ const Register = () => {
       Object.values(form).every(item => item.trim().length > 0) &&
       Object.values(errors).every(item => !item)
     ) {
-      register(form)(authDispatch);
+      register(form)(authDispatch)((res) => {
+        navigate(LOGIN, {data:res});
+      });
     }
   };
 
