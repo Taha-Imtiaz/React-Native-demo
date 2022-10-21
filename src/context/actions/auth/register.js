@@ -4,7 +4,7 @@ import {
   REGISTER_SUCCESS,
   CLEAR_AUTH_STATE,
 } from '../../../constants/actionTypes';
-import axiosInstace from '../../../helpers/axiosInterceptor';
+import axiosInstace from '../../../helpers/axiosInstance';
 
 export const clearAuthState = () => dispatch => {
   dispatch({
@@ -19,8 +19,8 @@ export default ({
     firstName: first_name,
     lastName: last_name,
   }) =>
-  
-   (dispatch) =>async (onSuccess) => {
+  dispatch =>
+  async onSuccess => {
     dispatch({
       type: REGISTER_LOADING,
     });
@@ -37,7 +37,7 @@ export default ({
         type: REGISTER_SUCCESS,
         payload: response.data,
       });
-      onSuccess(response.data)
+      onSuccess(response.data);
     } catch (error) {
       // console.log(
       //   '🚀 ~ file: register.js ~ line 47 ~ error',

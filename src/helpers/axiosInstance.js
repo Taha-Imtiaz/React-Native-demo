@@ -13,6 +13,7 @@ const axiosInstace = axios.create({
 axiosInstace.interceptors.request.use(
   async config => {
     const token = await AsyncStorage.getItem('token');
+    console.log(`JWT token ${token}`);
     // if toke then add authorization header
     if (token) {
       config.headers.Authorization = ` Bearer ${token}`;

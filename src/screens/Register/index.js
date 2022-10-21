@@ -5,7 +5,7 @@ import envs from '../../config/env';
 import {LOGIN} from '../../constants/routeNames';
 import register, {clearAuthState} from '../../context/actions/auth/register';
 import {GlobalContext} from '../../context/Provider';
-import axios from '../../helpers/axiosInterceptor';
+import axios from '../../helpers/axiosInstance';
 
 const Register = () => {
   const [form, setForm] = useState({});
@@ -97,8 +97,8 @@ const Register = () => {
       Object.values(form).every(item => item.trim().length > 0) &&
       Object.values(errors).every(item => !item)
     ) {
-      register(form)(authDispatch)((res) => {
-        navigate(LOGIN, {data:res});
+      register(form)(authDispatch)(res => {
+        navigate(LOGIN, {data: res});
       });
     }
   };
