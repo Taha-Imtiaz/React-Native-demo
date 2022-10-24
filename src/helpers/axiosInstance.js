@@ -3,7 +3,7 @@ import axios from 'axios';
 import env from '../config/env';
 
 let headers = {};
-console.log(env.DEV_BACKEND_URL);
+// console.log(env.DEV_BACKEND_URL);
 // create axios instace
 const axiosInstace = axios.create({
   baseURL: 'https://truly-contacts.herokuapp.com/api/',
@@ -13,7 +13,7 @@ const axiosInstace = axios.create({
 axiosInstace.interceptors.request.use(
   async config => {
     const token = await AsyncStorage.getItem('token');
-    console.log(`JWT token ${token}`);
+    // console.log(`JWT token ${token}`);
     // if toke then add authorization header
     if (token) {
       config.headers.Authorization = ` Bearer ${token}`;

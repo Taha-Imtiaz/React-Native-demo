@@ -4,7 +4,7 @@ import {Text} from 'react-native';
 import {
   CONTACT_DETAIL,
   CONTACT_LIST,
-  CREATE_CONATACT,
+  CREATE_CONTACT,
   SETTINGS,
 } from '../constants/routeNames';
 import ContactDetail from '../screens/ContactDetail';
@@ -27,7 +27,7 @@ const HomeNavigator = () => {
         name={CONTACT_DETAIL}
         component={ContactDetail}></HomeStack.Screen>
       <HomeStack.Screen
-        name={CREATE_CONATACT}
+        name={CREATE_CONTACT}
         component={CreateContact}></HomeStack.Screen>
       <HomeStack.Screen name={SETTINGS} component={Settings}></HomeStack.Screen>
     </HomeStack.Navigator>

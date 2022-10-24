@@ -16,7 +16,7 @@ const Login = () => {
   useEffect(() => {
     if (params?.data) {
       setJustSignedUp(true)
-      console.log('🚀 ~ file: index.js ~ line 16 ~ useEffect ~ params', params);
+      // console.log('🚀 ~ file: index.js ~ line 16 ~ useEffect ~ params', params);
       setForm({
         ...form,
         userName: params.data.username,

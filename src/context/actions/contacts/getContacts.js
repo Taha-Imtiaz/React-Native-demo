@@ -12,7 +12,7 @@ export default () => async dispatch => {
   });
   try {
     const response = await axiosInstace.get('contacts/');
-    console.log(`response ${JSON.stringify(response, null, 4)}`);
+    // console.log("🚀 ~ file: getContacts.js ~ line 15 ~ response", JSON.stringify(response.data))
     dispatch({
       type: GET_CONTACTS_SUCCESS,
       payload: response.data,

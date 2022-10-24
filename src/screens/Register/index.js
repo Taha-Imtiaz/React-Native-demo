@@ -15,7 +15,7 @@ const Register = () => {
     authDispatch,
     authState: {error, loading, data},
   } = useContext(GlobalContext);
-  console.log('🚀 ~ file: index.js ~ line 18 ~ Register ~ data', data);
+  // console.log('🚀 ~ file: index.js ~ line 18 ~ Register ~ data', data);
 
   // cancel out evens that are attached
   useFocusEffect(
