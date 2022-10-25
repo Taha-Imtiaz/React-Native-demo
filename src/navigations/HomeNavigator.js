@@ -5,11 +5,13 @@ import {
   CONTACT_DETAIL,
   CONTACT_LIST,
   CREATE_CONTACT,
+  LOGOUT,
   SETTINGS,
 } from '../constants/routeNames';
 import ContactDetail from '../screens/ContactDetail';
 import Contacts from '../screens/Contacts';
 import CreateContact from '../screens/CreateContact';
+import Logout from '../screens/Logout';
 import Settings from '../screens/Settings';
 
 const HomeNavigator = () => {
@@ -30,6 +32,7 @@ const HomeNavigator = () => {
         name={CREATE_CONTACT}
         component={CreateContact}></HomeStack.Screen>
       <HomeStack.Screen name={SETTINGS} component={Settings}></HomeStack.Screen>
+      <HomeStack.Screen name={LOGOUT} component={Logout}></HomeStack.Screen>
     </HomeStack.Navigator>
   );
 };

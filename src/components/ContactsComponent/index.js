@@ -16,7 +16,7 @@ import styles from './styles';
 import {useNavigation} from '@react-navigation/native';
 import {CREATE_CONTACT} from '../../constants/routeNames';
 
-const ContactsComponent = ({modalVisible, data, loading, setModalVisible}) => {
+const ContactsComponent = ({data, loading, sortBy}) => {
   const {navigate} = useNavigation();
   const ListEmptyComponent = () => {
     return (
@@ -79,17 +79,6 @@ const ContactsComponent = ({modalVisible, data, loading, setModalVisible}) => {
   return (
     <>
       <View style={{backgroundColor: colors.white}}>
-        <AppModal
-          title="My Profile"
-          modalBody={
-            <View>
-              <Text>Hello </Text>
-            </View>
-          }
-          modalFooter={<></>}
-          modalVisible={modalVisible}
-          setModalVisible={setModalVisible}
-        />
         {loading && (
           <View>
             <ActivityIndicator size={`large`} color={colors.primary} />
@@ -99,7 +88,26 @@ const ContactsComponent = ({modalVisible, data, loading, setModalVisible}) => {
         {!loading && (
           <View style={{paddingVertical: 20}}>
             <FlatList
-              data={data}
+              data={
+                sortBy
+                  ? data.sort((a, b) => {
+                      if (sortBy === 'First Name') {
+                        if (b.first_name > a.first_name) {
+                          return -1;
+                        } else {
+                          return 1;
+                        }
+                      }
+                      if (sortBy === 'Last Name') {
+                        if (b.last_name > a.last_name) {
+                          return -1;
+                        } else {
+                          return 1;
+                        }
+                      }
+                    })
+                  : data
+              }
               ItemSeparatorComponent={() => (
                 <View
                   style={{height: 0.5, backgroundColor: colors.grey}}></View>
