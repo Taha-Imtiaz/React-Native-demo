@@ -20,7 +20,7 @@ axiosInstace.interceptors.request.use(
     // console.log(`JWT token ${token}`);
     // if toke then add authorization header
     if (token) {
-      config.headers.Authorization = ` Bearer rrrrhgjjjggj`;
+      config.headers.Authorization = ` Bearer ${token}`;
     }
     return config;
   },
