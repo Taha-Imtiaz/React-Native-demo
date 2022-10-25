@@ -17,7 +17,7 @@ axiosInstace.interceptors.request.use(
     // navigate(CREATE_CONTACT);
 
     const token = await AsyncStorage.getItem('token');
-    // console.log(`JWT token ${token}`);
+    console.log(`JWT token ${token}`);
     // if toke then add authorization header
     if (token) {
       config.headers.Authorization = ` Bearer ${token}`;

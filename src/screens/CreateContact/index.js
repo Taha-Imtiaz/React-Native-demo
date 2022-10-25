@@ -1,14 +1,16 @@
 import {useNavigation} from '@react-navigation/native';
 import React, {useContext, useRef, useState} from 'react';
-import {Text, View} from 'react-native';
 import CreateContactComponent from '../../components/CreateContactComponent';
 import {CONTACT_LIST, CREATE_CONTACT} from '../../constants/routeNames';
 import createContact from '../../context/actions/contacts/createContact';
 import {GlobalContext} from '../../context/Provider';
+import uploadImage from '../../helpers/uploadImage';
 
 const CreateContact = () => {
   const sheetRef = useRef(null);
   const [form, setForm] = useState({});
+  const [uploading, setIsUploading] = useState(false);
+
   const [localFile, setLocalFile] = useState(null);
 
   const {navigate} = useNavigation();
@@ -26,9 +28,23 @@ const CreateContact = () => {
     });
   };
   const onSubmit = () => {
-    createContact(form)(contactsDispatch)(() => {
-      navigate(CONTACT_LIST);
-    });
+ 
+    if (localFile?.size) {
+      setIsUploading(true);
+      uploadImage(localFile)(url => {
+        setIsUploading(false);
+        console.log("🚀 ~ file: index.js ~ line 35 ~ uploadImage ~ url", url)
+        createContact({...form, contactPicture: url})(contactsDispatch)(() => {
+          navigate(CONTACT_LIST);
+        });
+      })(error => {
+        console.log(
+          '🚀 ~ file: index.js ~ line 44 ~ uploadImage ~ error',
+          error,
+        );
+        setIsUploading(false);
+      });
+    }
   };
   const closeSheet = () => {
     if (sheetRef.current) {
@@ -68,14 +84,14 @@ const CreateContact = () => {
       onChangeText={onChangeText}
       form={form}
       setForm={setForm}
-      loading={loading}
+      loading={loading || uploading}
       toggleValueChange={toggleValueChange}
       error={error}
       sheetRef={sheetRef}
       closeSheet={closeSheet}
       openSheet={openSheet}
       onFileSelected={onFileSelected}
-      localFile = {localFile}
+      localFile={localFile}
     />
   );
 };

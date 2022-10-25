@@ -47,7 +47,7 @@ const getIconFont = type => {
     case 'ecticon':
       return OctIcon;
     case 'ionicon':
-      return OctIcon;
+      return IonIcon;
     default:
       return FontAwesomeIcon;
   }

@@ -14,7 +14,7 @@ import colors from '../../assets/theme/colors';
 import Icon from '../common/Icon';
 import styles from './styles';
 import {useNavigation} from '@react-navigation/native';
-import {CREATE_CONTACT} from '../../constants/routeNames';
+import {CONTACT_DETAIL, CREATE_CONTACT} from '../../constants/routeNames';
 
 const ContactsComponent = ({data, loading, sortBy}) => {
   const {navigate} = useNavigation();
@@ -34,7 +34,9 @@ const ContactsComponent = ({data, loading, sortBy}) => {
     //   contact_picture,
     // );
     return (
-      <TouchableOpacity style={styles.itemContainer}>
+      <TouchableOpacity
+        style={styles.itemContainer}
+        onPress={() => navigate(CONTACT_DETAIL, {item})}>
         <View style={styles.item}>
           {contact_picture ? (
             <Image
