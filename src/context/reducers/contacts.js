@@ -2,6 +2,9 @@ import {
   CREATE_CONTACT_FAIL,
   CREATE_CONTACT_LOADING,
   CREATE_CONTACT_SUCCESS,
+  DELETE_CONTACT_FAIL,
+  DELETE_CONTACT_LOADING,
+  DELETE_CONTACT_SUCCESS,
   GET_CONTACTS_FAIL,
   GET_CONTACTS_LOADING,
   GET_CONTACTS_SUCCESS,
@@ -9,6 +12,39 @@ import {
 
 const contacts = (state, {type, payload}) => {
   switch (type) {
+    case DELETE_CONTACT_LOADING:
+      return {
+        ...state,
+        deleteContact: {
+          ...state.deleteContact,
+          error: null,
+          loading: true,
+        },
+      };
+    case DELETE_CONTACT_SUCCESS:
+      return {
+        ...state,
+        deleteContact: {
+          ...state.deleteContact,
+          error: null,
+          loading: false,
+        },
+        getContacts: {
+          ...state.getContacts,
+          error: null,
+          data: state.getContacts.data.filter(item => item.id !== payload),
+          loading: false,
+        },
+      };
+    case DELETE_CONTACT_FAIL:
+      return {
+        ...state,
+        deleteContact: {
+          ...state.deleteContact,
+          error: null,
+          loading: false,
+        },
+      };
     case CREATE_CONTACT_LOADING:
       return {
         ...state,
@@ -30,7 +66,7 @@ const contacts = (state, {type, payload}) => {
         getContacts: {
           ...state.getContacts,
           error: null,
-          data: [payload,...state.getContacts.data ],
+          data: [payload, ...state.getContacts.data],
           loading: false,
         },
       };

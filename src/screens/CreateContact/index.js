@@ -1,10 +1,11 @@
-import {useNavigation} from '@react-navigation/native';
-import React, {useContext, useRef, useState} from 'react';
+import {useNavigation, useRoute} from '@react-navigation/native';
+import React, {useContext, useEffect, useRef, useState} from 'react';
 import CreateContactComponent from '../../components/CreateContactComponent';
 import {CONTACT_LIST, CREATE_CONTACT} from '../../constants/routeNames';
 import createContact from '../../context/actions/contacts/createContact';
 import {GlobalContext} from '../../context/Provider';
 import uploadImage from '../../helpers/uploadImage';
+import countryCodes from '../../utils/countryCodes';
 
 const CreateContact = () => {
   const sheetRef = useRef(null);
@@ -14,6 +15,8 @@ const CreateContact = () => {
   const [localFile, setLocalFile] = useState(null);
 
   const {navigate} = useNavigation();
+  const {params} = useRoute();
+
   const {
     contactsDispatch,
     contactsState: {
@@ -21,6 +24,32 @@ const CreateContact = () => {
     },
   } = useContext(GlobalContext);
 
+  useEffect(() => {
+    if (params?.contact) {
+      const {
+        first_name: firstName,
+        phone_number: phoneNumber,
+        last_name: lastName,
+        is_favorite: isFavorite,
+        country_code: countryCode
+      } = params?.contact;
+      setForm({
+        ...form,
+        firstName,
+        phoneNumber,
+        lastName,
+        isFavorite,
+        // countryCode
+      });
+      // const country = countryCodes.find(item =>{
+
+      // })
+        console.log("🚀 ~ file: index.js ~ line 43 ~ useEffect ~ countryCode", countryCode)
+      if (params?.contact?.contact_picture) {
+        setLocalFile(params?.contact?.contact_picture);
+      }
+    }
+  }, []);
   const onChangeText = ({name, value}) => {
     setForm({
       ...form,
@@ -28,12 +57,11 @@ const CreateContact = () => {
     });
   };
   const onSubmit = () => {
- 
     if (localFile?.size) {
       setIsUploading(true);
       uploadImage(localFile)(url => {
         setIsUploading(false);
-        console.log("🚀 ~ file: index.js ~ line 35 ~ uploadImage ~ url", url)
+        console.log('🚀 ~ file: index.js ~ line 35 ~ uploadImage ~ url', url);
         createContact({...form, contactPicture: url})(contactsDispatch)(() => {
           navigate(CONTACT_LIST);
         });

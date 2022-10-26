@@ -40,7 +40,8 @@ const CreateContactComponent = ({
             onChangeText({name: 'firstName', value});
           }}
           label={'First Name'}
-          placeholder="Enter FIrst Name"
+          value = {form.firstName || ''}
+          placeholder="Enter First Name"
           error={error?.first_name?.[0]}
         />
         <Input
@@ -48,6 +49,8 @@ const CreateContactComponent = ({
             onChangeText({name: 'lastName', value});
           }}
           label={'Last Name'}
+          value = {form.lastName || ''}
+
           placeholder="Enter Last Name"
           error={error?.last_name?.[0]}
         />
@@ -71,6 +74,8 @@ const CreateContactComponent = ({
             />
           }
           style={{paddingLeft: 10}}
+          value = {form.phoneNumber || ''}
+
           iconPosition="left"
           onChangeText={value => {
             onChangeText({name: 'phoneNumber', value});
