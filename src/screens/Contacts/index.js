@@ -1,11 +1,19 @@
 import {TouchableOpacity} from 'react-native';
-import React, {useCallback, useContext, useEffect, useState} from 'react';
+import React, {
+  createRef,
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import Icon from '../../components/common/Icon';
 import ContactsComponent from '../../components/ContactsComponent';
 import {GlobalContext} from '../../context/Provider';
 import getContacts from '../../context/actions/contacts/getContacts';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { CONTACT_DETAIL } from '../../constants/routeNames';
 
 const Contacts = () => {
   // console.log(
@@ -15,7 +23,7 @@ const Contacts = () => {
   const {navigate, setOptions, toggleDrawer} = useNavigation();
   const [modalVisible, setModalVisible] = useState(false);
   const [sortBy, setSortBy] = useState(null);
-  console.log('🚀 ~ file: index.js ~ line 14 ~ Contacts ~ sortBy', sortBy);
+  const contactsRef = useRef([]);
 
   const getSettings = async () => {
     const sortPref = await AsyncStorage.getItem(`sortBy`);
@@ -44,6 +52,20 @@ const Contacts = () => {
       return () => {};
     }, []),
   );
+  useEffect(() => {
+    const prevState = contactsRef.current;
+    // update ref with newly added state
+    contactsRef.current = data;
+
+    const newList = contactsRef.current;
+    if (newList.length - prevState.length === 1) {
+      const newContact = newList.find(
+        item => !prevState.map(i => i.id).includes(item.id),
+      );
+      // console.log(`new Contact ${newContact}`);
+      navigate(CONTACT_DETAIL, {item: newContact})
+    }
+  }, [data.length]);
 
   useEffect(() => {
     // dynamically set options
