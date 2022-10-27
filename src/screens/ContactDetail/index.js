@@ -1,5 +1,5 @@
 import {useNavigation, useRoute} from '@react-navigation/native';
-import React, {useContext, useEffect} from 'react';
+import React, {useContext, useEffect, useRef, useState} from 'react';
 import {
   ActivityIndicator,
   Alert,
@@ -20,10 +20,14 @@ const ContactDetail = () => {
   // console.log('🚀 ~ file: index.js ~ line 14 ~ ContactDetail ~ item', item);
   const {
     contactsDispatch,
-    contactsState:{  deleteContact: {loading}},
+    contactsState: {
+      deleteContact: {loading},
+    },
   } = useContext(GlobalContext);
 
   const {setOptions} = useNavigation();
+  const sheetRef = useRef(null);
+  const [localFile, setLocalFile] = useState(null);
 
   useEffect(() => {
     if (item) {
@@ -61,7 +65,9 @@ const ContactDetail = () => {
               }}
               style={{paddingLeft: 10}}>
               {loading ? (
-                <ActivityIndicator size={`small`} color={colors.primary}></ActivityIndicator>
+                <ActivityIndicator
+                  size={`small`}
+                  color={colors.primary}></ActivityIndicator>
               ) : (
                 <Icon
                   size={21}
@@ -74,9 +80,49 @@ const ContactDetail = () => {
         ),
       });
     }
-  }, [item,loading]);
-  // console.log('🚀 ~ file: index.js ~ line 7 ~ ContactDetail ~ item', item);
-  return <ContactDetailsComponent contact={item} />;
+  }, [item, loading]);
+
+  const closeSheet = () => {
+    if (sheetRef.current) {
+      sheetRef.current.close();
+    }
+  };
+  const openSheet = () => {
+    if (sheetRef.current) {
+      sheetRef.current.open();
+    }
+  };
+
+  const onFileSelected = image => {
+    // closeSheet
+    closeSheet();
+    setLocalFile(image);
+   
+    // upload picture when user choose it
+    setIsUploading(true);
+    uploadImage(localFile)(url => {
+      setIsUploading(false);
+      editContact(
+        {...form, contactPicture: url},
+        params?.contact.id,
+      )(contactsDispatch)(item => {
+        navigate(CONTACT_DETAIL, {item});
+      });
+    })(err => {
+      console.log('err :>> ', err);
+      setIsUploading(false);
+    });
+  };
+
+  return (
+    <ContactDetailsComponent
+      sheetRef={sheetRef}
+      onFileSelected={onFileSelected}
+      openSheet={openSheet}
+      contact={item}
+      localFile = {localFile}
+    />
+  );
 };
 
 export default ContactDetail;

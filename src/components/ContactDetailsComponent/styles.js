@@ -52,4 +52,10 @@ export default StyleSheet.create({
     flexGrow: 1,
     paddingHorizontal: 20,
   },
+  imageView: {
+    width: 150,
+    height: 150,
+    borderRadius: 100,
+    alignSelf: 'center',
+  },
 });

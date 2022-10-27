@@ -20,16 +20,17 @@ export default form => dispatch => async onSuccess => {
   });
   try {
     const response = await axiosInstace.post('contacts/', requestPayload);
-    // console.log(
-    //   '🚀 ~ file: createContact.js ~ line 23 ~ response',
-    //   JSON.stringify(response.data),
-    // );
+    console.log(
+      '🚀 ~ file: createContact.js ~ line 23 ~ response',
+      JSON.stringify(response.data),
+    );
     dispatch({
       type: CREATE_CONTACT_SUCCESS,
       payload: response.data,
     });
     onSuccess();
   } catch (error) {
+    console.log('🚀 ~ file: createContact.js ~ line 33 ~ error', error);
     dispatch({
       type: CREATE_CONTACT_FAIL,
       payload: error.response

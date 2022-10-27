@@ -25,7 +25,30 @@ const contacts = (state, {type, payload}) => {
           loading: true,
         },
       };
-
+      case EDIT_CONTACT_SUCCESS:
+      return {
+        ...state,
+        createContact: {
+          ...state.createContact,
+          error: null,
+          loading: false,
+        },
+        getContacts: {
+          ...state.getContacts,
+          error: null,
+          data: state.getContacts.data.map(item => item.id === payload.id ? payload :item),
+          loading: false,
+        },
+      };
+      case DELETE_CONTACT_FAIL:
+        return {
+          ...state,
+          createContact: {
+            ...state.createContact,
+            error: null,
+            loading: false,
+          },
+        };
 
 
 

@@ -1,6 +1,7 @@
 import storage from '@react-native-firebase/storage';
 
-export default (file) => (onSuccess) => (onError) =>  {
+export default file => onSuccess => onError => {
+  console.log('🚀 ~ file: uploadImage.js ~ line 4 ~ file', file);
   const path = "contact-pictures/user/777/" + file.creationDate || file.path;
 
   // create a ref
@@ -12,9 +13,9 @@ export default (file) => (onSuccess) => (onError) =>  {
   task
     .then(async () => {
       const url = await ref.getDownloadURL();
-      onSuccess(url)
+      onSuccess(url);
     })
     .catch(error => {
-      onError(error)
+      onError(error);
     });
 };

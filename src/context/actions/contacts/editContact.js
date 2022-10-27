@@ -6,7 +6,7 @@ import {
 } from '../../../constants/actionTypes';
 import axiosInstace from '../../../helpers/axiosInstance';
 
-export default (form,id) => dispatch => async onSuccess => {
+export default (form, id) => dispatch => async onSuccess => {
   const requestPayload = {
     country_code: form.phoneCode || '',
     first_name: form.firstName || '',
@@ -20,15 +20,15 @@ export default (form,id) => dispatch => async onSuccess => {
   });
   try {
     const response = await axiosInstace.put(`contacts/${id}`, requestPayload);
-    // console.log(
-    //   '🚀 ~ file: EDITContact.js ~ line 23 ~ response',
-    //   JSON.stringify(response.data),
-    // );
     dispatch({
       type: EDIT_CONTACT_SUCCESS,
       payload: response.data,
     });
-    onSuccess();
+    console.log(
+      '🚀 ~ file: EDITContact.js ~ line 23 ~ response',
+      JSON.stringify(response.data),
+    );
+    onSuccess(response.data);
   } catch (error) {
     dispatch({
       type: EDIT_CONTACT_FAIL,

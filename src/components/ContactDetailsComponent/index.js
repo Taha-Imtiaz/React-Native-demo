@@ -18,8 +18,10 @@ import {useNavigation} from '@react-navigation/native';
 import {CONTACT_DETAIL, CREATE_CONTACT} from '../../constants/routeNames';
 import Container from '../common/Container';
 import ImageComponent from './ImageComponent';
+import {DEFAULT_IMAGE_URI} from '../../constants/general';
+import ImagePicker from '../common/ImagePicker';
 
-const ContactDetailsComponent = ({contact}) => {
+const ContactDetailsComponent = ({contact, localFile, openSheet , sheetRef , onFileSelected}) => {
   const {navigate} = useNavigation();
   const ListEmptyComponent = () => {
     return (
@@ -34,6 +36,17 @@ const ContactDetailsComponent = ({contact}) => {
     <ScrollView style={styles.scrollView}>
       <View style={styles.container}>
         {contact_picture && <ImageComponent src={contact_picture} />}
+        {!contact_picture && (
+          <View style = {{alignItems:"center",paddingVertical:20}}>
+            <Image
+              source={{uri: localFile?.path || DEFAULT_IMAGE_URI}}
+              style={styles.imageView}
+            />
+            <TouchableOpacity onPress={() => {openSheet()}}>
+              <Text style = {{color:colors.primary}}>Add Picture</Text>
+            </TouchableOpacity>
+          </View>
+        )}
         <View style={styles.content}>
           <Text style={styles.names}>
             {first_name} {last_name}
@@ -111,6 +124,8 @@ const ContactDetailsComponent = ({contact}) => {
           }}
         />
       </View>
+      <ImagePicker onFileSelected={onFileSelected} ref={sheetRef} />
+
     </ScrollView>
   );
 };

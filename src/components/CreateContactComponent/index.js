@@ -29,7 +29,7 @@ const CreateContactComponent = ({
     <View style={styles.container}>
       <Container>
         <Image
-          source={{uri: localFile?.path || DEFAULT_IMAGE_URI}}
+          source={{uri: localFile?.path || localFile || DEFAULT_IMAGE_URI}}
           style={styles.imageView}
         />
         <TouchableOpacity onPress={openSheet}>
