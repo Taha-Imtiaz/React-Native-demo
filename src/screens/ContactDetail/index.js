@@ -17,7 +17,7 @@ import {navigate} from '../../navigations/SideMenu/RootNavigator';
 
 const ContactDetail = () => {
   const {params: {item = {}} = {}} = useRoute();
-  console.log('🚀 ~ file: index.js ~ line 14 ~ ContactDetail ~ item', item);
+  // console.log('🚀 ~ file: index.js ~ line 14 ~ ContactDetail ~ item', item);
   const {
     contactsDispatch,
     contactsState:{  deleteContact: {loading}},

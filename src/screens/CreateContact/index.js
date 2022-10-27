@@ -31,25 +31,34 @@ const CreateContact = () => {
         phone_number: phoneNumber,
         last_name: lastName,
         is_favorite: isFavorite,
-        country_code: countryCode
+        country_code: countryCode,
       } = params?.contact;
-      setForm({
-        ...form,
+
+      setForm(prevState => ({
+        ...prevState,
         firstName,
         phoneNumber,
         lastName,
         isFavorite,
-        // countryCode
+      }));
+      const country = countryCodes.find(item => {
+        return item.value.replace('+', '') === countryCode;
       });
-      // const country = countryCodes.find(item =>{
 
-      // })
-        console.log("🚀 ~ file: index.js ~ line 43 ~ useEffect ~ countryCode", countryCode)
+      if (country) {
+        setForm(prevState => ({
+          ...prevState,
+          countryCode: country.key.toUpperCase(),
+        }));
+      }
+
       if (params?.contact?.contact_picture) {
         setLocalFile(params?.contact?.contact_picture);
       }
     }
   }, []);
+  console.log(`form ${JSON.parse(JSON.stringify(form))}`);
+  console.log(`local file ${localFile}`);
   const onChangeText = ({name, value}) => {
     setForm({
       ...form,
@@ -57,21 +66,61 @@ const CreateContact = () => {
     });
   };
   const onSubmit = () => {
-    if (localFile?.size) {
-      setIsUploading(true);
-      uploadImage(localFile)(url => {
-        setIsUploading(false);
-        console.log('🚀 ~ file: index.js ~ line 35 ~ uploadImage ~ url', url);
-        createContact({...form, contactPicture: url})(contactsDispatch)(() => {
-          navigate(CONTACT_LIST);
+    if (params?.contact) {
+      // updating existing picture
+
+
+      if (localFile?.size) {
+        setIsUploading(true);
+        uploadImage(localFile)(url => {
+          setIsUploading(false);
+          // console.log('🚀 ~ file: index.js ~ line 35 ~ uploadImage ~ url', url);
+          editContact({...form, contactPicture: url})(contactsDispatch)(
+            () => {
+              navigate(CONTACT_LIST);
+            },
+          );
+        })(error => {
+          // console.log(
+          //   '🚀 ~ file: index.js ~ line 44 ~ uploadImage ~ error',
+          //   error,
+          // );
+          setIsUploading(false);
         });
-      })(error => {
-        console.log(
-          '🚀 ~ file: index.js ~ line 44 ~ uploadImage ~ error',
-          error,
-        );
-        setIsUploading(false);
-      });
+      } else {
+        editContact(form)(contactsDispatch)(
+          () => {
+            navigate(CONTACT_LIST);
+          },
+        )
+      }
+
+
+    } else {
+      if (localFile?.size) {
+        setIsUploading(true);
+        uploadImage(localFile)(url => {
+          setIsUploading(false);
+          // console.log('🚀 ~ file: index.js ~ line 35 ~ uploadImage ~ url', url);
+          createContact({...form, contactPicture: url})(contactsDispatch)(
+            () => {
+              navigate(CONTACT_LIST);
+            },
+          );
+        })(error => {
+          // console.log(
+          //   '🚀 ~ file: index.js ~ line 44 ~ uploadImage ~ error',
+          //   error,
+          // );
+          setIsUploading(false);
+        });
+      } else {
+        createContact(form)(contactsDispatch)(
+          () => {
+            navigate(CONTACT_LIST);
+          },
+        )
+      }
     }
   };
   const closeSheet = () => {
@@ -100,10 +149,10 @@ const CreateContact = () => {
     // closeSheet
     closeSheet();
     setLocalFile(image);
-    console.log(
-      '🚀 ~ file: index.js ~ line 54 ~ onFileSelected ~ image',
-      image,
-    );
+    // console.log(
+    //   '🚀 ~ file: index.js ~ line 54 ~ onFileSelected ~ image',
+    //   image,
+    // );
   };
 
   return (

@@ -32,7 +32,7 @@ export default ({
         first_name,
         last_name,
       });
-      console.log('🚀 ~ file: register.js ~ line 34 ~ response', response.data);
+      // console.log('🚀 ~ file: register.js ~ line 34 ~ response', response.data);
       dispatch({
         type: REGISTER_SUCCESS,
         payload: response.data,

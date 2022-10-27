@@ -23,7 +23,7 @@ const CreateContactComponent = ({
   onFileSelected,
   localFile,
 }) => {
-  console.log('🚀 ~ file: index.js ~ line 26 ~ localFile', localFile);
+  // console.log('🚀 ~ file: index.js ~ line 26 ~ localFile', localFile);
 
   return (
     <View style={styles.container}>

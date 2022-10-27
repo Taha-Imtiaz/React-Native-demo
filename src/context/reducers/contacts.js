@@ -2,6 +2,9 @@ import {
   CREATE_CONTACT_FAIL,
   CREATE_CONTACT_LOADING,
   CREATE_CONTACT_SUCCESS,
+  EDIT_CONTACT_FAIL,
+  EDIT_CONTACT_LOADING,
+  EDIT_CONTACT_SUCCESS,
   DELETE_CONTACT_FAIL,
   DELETE_CONTACT_LOADING,
   DELETE_CONTACT_SUCCESS,
@@ -12,6 +15,20 @@ import {
 
 const contacts = (state, {type, payload}) => {
   switch (type) {
+
+    case EDIT_CONTACT_LOADING:
+      return {
+        ...state,
+        createContact: {
+          ...state.createContact,
+          error: null,
+          loading: true,
+        },
+      };
+
+
+
+
     case DELETE_CONTACT_LOADING:
       return {
         ...state,

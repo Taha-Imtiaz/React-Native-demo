@@ -7,7 +7,7 @@ import {
 import axiosInstace from '../../../helpers/axiosInstance';
 
 export default id => dispatch => async onSuccess => {
-  console.log('🚀 ~ file: deleteContact.js ~ line 10 ~ id', id);
+  // console.log('🚀 ~ file: deleteContact.js ~ line 10 ~ id', id);
   dispatch({
     type: DELETE_CONTACT_LOADING,
   });
