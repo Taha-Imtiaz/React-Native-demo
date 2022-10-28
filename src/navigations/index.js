@@ -2,10 +2,11 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {NavigationContainer} from '@react-navigation/native';
 import React, {useContext, useEffect, useState} from 'react';
 import {ActivityIndicator} from 'react-native';
+import SplashScreen from 'react-native-splash-screen';
 import {GlobalContext} from '../context/Provider';
 import AuthNavigator from './AuthNavigator';
 import DrawerNavigator from './DrawerNavigator';
-import { navigationRef } from './SideMenu/RootNavigator';
+import {navigationRef} from './SideMenu/RootNavigator';
 
 const AppNavContainer = () => {
   const {
@@ -29,15 +30,17 @@ const AppNavContainer = () => {
   useEffect(() => {
     getUser();
   }, [isLoggedIn]);
+
+  useEffect(() => {
+    if (authLoaded) {
+      SplashScreen.hide(); //when app loaded hide splash screen
+    }
+  }, [authLoaded]);
   return (
     <>
       {authLoaded ? (
         <NavigationContainer ref={navigationRef}>
-          {isAuthenticated ? (
-            <DrawerNavigator />
-          ) : (
-            <AuthNavigator />
-          )}
+          {isAuthenticated ? <DrawerNavigator /> : <AuthNavigator />}
         </NavigationContainer>
       ) : (
         <ActivityIndicator />

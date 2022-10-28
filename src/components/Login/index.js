@@ -1,6 +1,7 @@
 import {useNavigation} from '@react-navigation/native';
 import React, {useState} from 'react';
 import {Image, Text, TextInput, TouchableOpacity, View} from 'react-native';
+import { scale } from 'react-native-size-matters';
 import Container from '../../components/common/Container';
 import CustomButton from '../../components/common/CustomButton';
 import Input from '../../components/common/Input';
@@ -15,8 +16,8 @@ const LoginComponent = ({onChange, onSubmit, justSignedUp, form, loading, error}
     <Container>
       <Image
         source={require(`../../assets/images/logo.png`)}
-        height={70}
-        width={70}
+        height={scale(70)}
+        width={scale(70)}
         style={styles.logoImage}
       />
       <View>

@@ -10,9 +10,11 @@ import {
 import colors from '../../assets/theme/colors';
 import Icon from '../../components/common/Icon';
 import ContactDetailsComponent from '../../components/ContactDetailsComponent';
-import {CONTACT_LIST} from '../../constants/routeNames';
+import {CONTACT_DETAIL, CONTACT_LIST} from '../../constants/routeNames';
 import deleteContact from '../../context/actions/contacts/deleteContact';
+import editContact from '../../context/actions/contacts/editContact';
 import {GlobalContext} from '../../context/Provider';
+import uploadImage from '../../helpers/uploadImage';
 import {navigate} from '../../navigations/SideMenu/RootNavigator';
 
 const ContactDetail = () => {
@@ -28,6 +30,8 @@ const ContactDetail = () => {
   const {setOptions} = useNavigation();
   const sheetRef = useRef(null);
   const [localFile, setLocalFile] = useState(null);
+  const [updatingImage, setUpdatingImage] = useState(false);
+  const [uploadSucceeded, setUploadSucceeded] = useState(false);
 
   useEffect(() => {
     if (item) {
@@ -97,20 +101,35 @@ const ContactDetail = () => {
     // closeSheet
     closeSheet();
     setLocalFile(image);
-   
-    // upload picture when user choose it
-    setIsUploading(true);
+    console.log(`local file ${localFile}`);
+    // upload picture to firebase when user choose it
+    setUpdatingImage(true);
     uploadImage(localFile)(url => {
-      setIsUploading(false);
+      const {
+        first_name: firstName,
+        last_name: lastName,
+        phone_number: phoneNumber,
+        country_code: phoneCode,
+        is_favorite: isFavorite,
+      } = item;
       editContact(
-        {...form, contactPicture: url},
-        params?.contact.id,
+        {
+          firstName,
+          lastName,
+          phoneNumber,
+          phoneCode,
+          isFavorite,
+          contactPicture: url,
+        },
+        item.id,
       )(contactsDispatch)(item => {
-        navigate(CONTACT_DETAIL, {item});
+        // navigate(CONTACT_DETAIL, {item});
+        setUpdatingImage(false);
+        setUploadSucceeded(true);
       });
     })(err => {
       console.log('err :>> ', err);
-      setIsUploading(false);
+      setUpdatingImage(false);
     });
   };
 
@@ -120,7 +139,9 @@ const ContactDetail = () => {
       onFileSelected={onFileSelected}
       openSheet={openSheet}
       contact={item}
-      localFile = {localFile}
+      localFile={localFile}
+      uploadSucceeded={uploadSucceeded}
+      updatingImage={updatingImage}
     />
   );
 };

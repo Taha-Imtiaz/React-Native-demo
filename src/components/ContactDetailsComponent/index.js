@@ -21,7 +21,15 @@ import ImageComponent from './ImageComponent';
 import {DEFAULT_IMAGE_URI} from '../../constants/general';
 import ImagePicker from '../common/ImagePicker';
 
-const ContactDetailsComponent = ({contact, localFile, openSheet , sheetRef , onFileSelected}) => {
+const ContactDetailsComponent = ({
+  contact,
+  updatingImage,
+  uploadSucceeded,
+  localFile,
+  openSheet,
+  sheetRef,
+  onFileSelected,
+}) => {
   const {navigate} = useNavigation();
   const ListEmptyComponent = () => {
     return (
@@ -35,15 +43,20 @@ const ContactDetailsComponent = ({contact, localFile, openSheet , sheetRef , onF
   return (
     <ScrollView style={styles.scrollView}>
       <View style={styles.container}>
-        {contact_picture && <ImageComponent src={contact_picture} />}
-        {!contact_picture && (
-          <View style = {{alignItems:"center",paddingVertical:20}}>
+        {(contact_picture || uploadSucceeded) && <ImageComponent src={contact_picture || localFile?.path} />}
+        {!contact_picture && !uploadSucceeded && (
+          <View style={{alignItems: 'center', paddingVertical: 20}}>
             <Image
               source={{uri: localFile?.path || DEFAULT_IMAGE_URI}}
               style={styles.imageView}
             />
-            <TouchableOpacity onPress={() => {openSheet()}}>
-              <Text style = {{color:colors.primary}}>Add Picture</Text>
+            <TouchableOpacity
+              onPress={() => {
+                openSheet();
+              }}>
+              <Text style={{color: colors.primary}}>
+                {updatingImage ? 'Updating...' : 'Add Picture'}
+              </Text>
             </TouchableOpacity>
           </View>
         )}
@@ -125,7 +138,6 @@ const ContactDetailsComponent = ({contact, localFile, openSheet , sheetRef , onF
         />
       </View>
       <ImagePicker onFileSelected={onFileSelected} ref={sheetRef} />
-
     </ScrollView>
   );
 };
